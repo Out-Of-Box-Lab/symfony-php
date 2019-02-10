@@ -5,9 +5,9 @@ MAINTAINER Zakariae Filali <filali.zakariae@gmail.com>
 ENV WORKDIR "/var/www/app"
 
 RUN apk upgrade --update && apk --no-cache add \
-    git autoconf tzdata openntpd libcurl curl-dev coreutils \
+    git autoconf tzdata openntpd libcurl coreutils \
     libmcrypt-dev freetype-dev libxpm-dev libjpeg-turbo-dev libvpx-dev \
-    libpng-dev libressl-dev libxml2-dev postgresql-dev icu-dev \
+    libpng-dev libressl-dev libxml2-dev icu-dev \
     yarn
 
 RUN apk add --no-cache --virtual build-dependencies icu-dev libxml2-dev freetype-dev libpng-dev libjpeg-turbo-dev g++ make autoconf
@@ -18,7 +18,7 @@ RUN docker-php-ext-configure intl \
     --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/ \
     --with-xpm-dir=/usr/include/
 
-RUN docker-php-ext-install -j$(nproc) gd iconv pdo pdo_mysql pdo_pgsql curl \
+RUN docker-php-ext-install -j$(nproc) gd iconv pdo pdo_mysql \
     bcmath mbstring json xml xmlrpc zip intl opcache exif
 
 # Add mcrypt
