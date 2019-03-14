@@ -21,7 +21,7 @@ RUN docker-php-ext-install -j$(nproc) gd iconv pdo pdo_mysql \
     bcmath mcrypt mbstring json xml xmlrpc zip intl opcache exif
 
 # Add timezone
-RUN rm /etc/localtime && \
+RUN rm /etc/localtime || true && \
     ln -s /usr/share/zoneinfo/UTC /etc/localtime && \
     "date"
 

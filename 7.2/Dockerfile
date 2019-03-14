@@ -27,7 +27,7 @@ RUN yes '' | pecl install -f mcrypt
 RUN echo "extension=mcrypt.so" > /usr/local/etc/php/conf.d/mcrypt.ini
 
 # Add timezone
-RUN rm /etc/localtime && \
+RUN rm /etc/localtime || true && \
     ln -s /usr/share/zoneinfo/UTC /etc/localtime && \
     "date"
 

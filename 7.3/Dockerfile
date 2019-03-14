@@ -8,7 +8,7 @@ RUN apk upgrade --update && apk --no-cache add \
     git autoconf tzdata openntpd libcurl coreutils \
     libmcrypt-dev freetype-dev libxpm-dev libjpeg-turbo-dev libvpx-dev \
     libpng-dev libressl-dev libxml2-dev icu-dev \
-    yarn openldap-dev
+    yarn openldap-dev libzip-dev
 
 RUN apk add --no-cache --virtual build-dependencies icu-dev libxml2-dev freetype-dev libpng-dev libjpeg-turbo-dev g++ make autoconf
 
@@ -27,7 +27,7 @@ RUN yes '' | pecl install -f mcrypt
 RUN echo "extension=mcrypt.so" > /usr/local/etc/php/conf.d/mcrypt.ini
 
 # Add timezone
-RUN rm /etc/localtime && \
+RUN rm /etc/localtime || true && \
     ln -s /usr/share/zoneinfo/UTC /etc/localtime && \
     "date"
 
