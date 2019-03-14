@@ -1,6 +1,6 @@
 FROM php:7.1-fpm-alpine
 
-MAINTAINER Zakariae Filali <filali.zakariae@gmail.com>
+MAINTAINER Dieter Blomme <dieterblomme@gmail.com>
 
 ENV WORKDIR "/var/www/app"
 
