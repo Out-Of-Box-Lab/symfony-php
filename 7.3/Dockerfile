@@ -5,12 +5,13 @@ MAINTAINER Dieter Blomme <dieterblomme@gmail.com>
 ENV WORKDIR "/var/www/app"
 
 RUN apk upgrade --update && apk --no-cache add \
-    git autoconf tzdata openntpd libcurl coreutils \
+    git autoconf tzdata openntpd libcurl curl-dev coreutils \
     libmcrypt-dev freetype-dev libxpm-dev libjpeg-turbo-dev libvpx-dev \
-    libpng-dev libressl-dev libxml2-dev icu-dev \
-    yarn openldap-dev libzip-dev
+    libpng-dev libressl libressl-dev  libxml2-dev postgresql-dev icu-dev \
+    libzip-dev yarn openldap-dev
 
-RUN apk add --no-cache --virtual build-dependencies icu-dev libxml2-dev freetype-dev libpng-dev libjpeg-turbo-dev g++ make autoconf
+RUN apk add --no-cache --virtual build-dependencies icu-dev libxml2-dev \
+    freetype-dev libpng-dev libjpeg-turbo-dev g++ make autoconf
 
 RUN docker-php-ext-configure intl \
     && docker-php-ext-configure opcache \
@@ -19,7 +20,7 @@ RUN docker-php-ext-configure intl \
     --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/ \
     --with-xpm-dir=/usr/include/
 
-RUN docker-php-ext-install -j$(nproc) gd iconv pdo pdo_mysql \
+RUN docker-php-ext-install -j$(nproc) gd iconv pdo pdo_mysql pdo_pgsql curl \
     bcmath mbstring json xml xmlrpc zip intl opcache exif
 
 # Add mcrypt
@@ -27,8 +28,7 @@ RUN yes '' | pecl install -f mcrypt
 RUN echo "extension=mcrypt.so" > /usr/local/etc/php/conf.d/mcrypt.ini
 
 # Add timezone
-RUN rm /etc/localtime || true && \
-    ln -s /usr/share/zoneinfo/UTC /etc/localtime && \
+RUN ln -s /usr/share/zoneinfo/UTC /etc/localtime && \
     "date"
 
 # Install composer

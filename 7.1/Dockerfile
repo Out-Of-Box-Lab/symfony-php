@@ -5,9 +5,9 @@ MAINTAINER Dieter Blomme <dieterblomme@gmail.com>
 ENV WORKDIR "/var/www/app"
 
 RUN apk upgrade --update && apk --no-cache add \
-    git autoconf tzdata openntpd libcurl coreutils \
+    git autoconf tzdata openntpd libcurl curl-dev coreutils \
     libmcrypt-dev freetype-dev libxpm-dev libjpeg-turbo-dev libvpx-dev \
-    libpng-dev libressl libressl-dev libxml2-dev icu-dev \
+    libpng-dev libressl libressl-dev libxml2-dev postgresql-dev icu-dev \
     yarn openldap-dev
 
 RUN docker-php-ext-configure intl \
@@ -17,12 +17,11 @@ RUN docker-php-ext-configure intl \
     --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/ \
     --with-xpm-dir=/usr/include/
 
-RUN docker-php-ext-install -j$(nproc) gd iconv pdo pdo_mysql \
+RUN docker-php-ext-install -j$(nproc) gd iconv pdo pdo_mysql pdo_pgsql curl \
     bcmath mcrypt mbstring json xml xmlrpc zip intl opcache exif
 
 # Add timezone
-RUN rm /etc/localtime || true && \
-    ln -s /usr/share/zoneinfo/UTC /etc/localtime && \
+RUN ln -s /usr/share/zoneinfo/UTC /etc/localtime && \
     "date"
 
 # Install composer
