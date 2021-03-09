@@ -19,7 +19,7 @@ RUN docker-php-ext-configure intl \
     && docker-php-ext-configure gd --with-freetype --with-jpeg
 
 RUN docker-php-ext-install -j$(nproc) gd iconv pdo pdo_mysql pdo_pgsql curl \
-    bcmath json xml xmlrpc zip intl opcache exif
+    bcmath json xml xmlrpc zip intl opcache exif ldap
 
 # Install Redis
 RUN docker-php-source extract \
