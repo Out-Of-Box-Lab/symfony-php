@@ -4,6 +4,9 @@ MAINTAINER Dieter Blomme <dieterblomme@gmail.com>
 
 ENV WORKDIR "/var/www/app"
 
+RUN cd /usr/local/etc/php/conf.d/ && \
+  echo 'memory_limit = -1' >> /usr/local/etc/php/conf.d/docker-php-ram-limit.ini
+
 RUN apk upgrade --update && apk --no-cache add \
     gcc g++ make autoconf tzdata openntpd libcurl curl-dev coreutils \
     freetype-dev libxpm-dev libjpeg-turbo-dev libvpx-dev \
