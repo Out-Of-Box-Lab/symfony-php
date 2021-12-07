@@ -14,7 +14,7 @@ RUN apk upgrade --update && apk --no-cache add \
     postgresql-dev yarn openldap-dev
 
 RUN apk add --no-cache --virtual build-dependencies icu-dev libxml2-dev \
-    freetype-dev libpng-dev libjpeg-turbo-dev g++ make autoconf
+    freetype-dev libpng-dev libjpeg-turbo-dev g++ make autoconf patch
 
 RUN docker-php-ext-configure intl \
     && docker-php-ext-configure opcache \
