@@ -1,4 +1,4 @@
-FROM php:7.4-fpm-alpine
+FROM --platform=linux/amd64 php:7.4-fpm-alpine
 
 MAINTAINER Dieter Blomme <dieterblomme@gmail.com>
 
@@ -21,7 +21,7 @@ RUN docker-php-ext-configure intl \
     && docker-php-ext-configure ldap \
     && docker-php-ext-configure gd --with-freetype --with-jpeg
 
-RUN docker-php-ext-install -j$(nproc) gd iconv pdo pdo_mysql pdo_pgsql curl \
+RUN docker-php-ext-install -j$(nproc) gd pdo pdo_mysql pdo_pgsql curl \
     bcmath json xml xmlrpc zip intl opcache exif ldap
 
 # Install Redis
