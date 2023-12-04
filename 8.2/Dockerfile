@@ -20,8 +20,9 @@ RUN docker-php-ext-configure intl \
     && docker-php-ext-configure opcache \
     && docker-php-ext-configure ldap \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) gd zip xml intl pdo pdo_mysql pdo_pgsql curl bcmath opcache exif ldap gettext
+    && docker-php-ext-install -j$(nproc) gd zip xml intl pdo pdo_mysql pdo_pgsql curl bcmath opcache exif ldap
 
+RUN apk add --no-cache gettext-dev && docker-php-ext-install -j$(nproc) gettext
 # Install Redis
 RUN docker-php-source extract \
     && pecl install redis \
