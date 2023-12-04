@@ -1,8 +1,9 @@
 name: Create and publish Docker images
 
 on:
-  release:
-    types: [published]
+  push:
+    branches:
+      - master
 
 jobs:
   push_to_registry:
