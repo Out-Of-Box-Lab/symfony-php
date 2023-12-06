@@ -7,26 +7,59 @@ ENV WORKDIR "/var/www/app"
 RUN cd /usr/local/etc/php/conf.d/ && \
   echo 'memory_limit = -1' >> /usr/local/etc/php/conf.d/docker-php-ram-limit.ini
 
-RUN apk upgrade --update && apk --no-cache add \
-    gcc g++ make autoconf tzdata openntpd libcurl curl-dev coreutils \
-    freetype-dev libxpm-dev libjpeg-turbo-dev libvpx-dev \
-    libpng-dev libressl libxml2-dev icu-dev libzip-dev \
-    postgresql-dev yarn openldap-dev
-
-RUN apk add --no-cache --virtual build-dependencies icu-dev libxml2-dev \
-    freetype-dev libpng-dev libjpeg-turbo-dev g++ make autoconf patch
+RUN apk upgrade --update  \
+    && apk --no-cache add --virtual build-dependencies \
+        autoconf \
+        coreutils \
+        curl-dev \
+        freetype-dev \
+        g++ \
+        gcc \
+        gettext-dev \
+        icu-dev \
+        libcurl \
+        libjpeg-turbo-dev \
+        libmemcached-dev \
+        libpng-dev \
+        libressl \
+        libvpx-dev \
+        libxml2-dev \
+        libxpm-dev \
+        libzip-dev \
+        make \
+        openldap-dev \
+        openntpd \
+        patch \
+        postgresql-dev \
+        tzdata \
+        yarn \
+    && rm -rf /var/cache/apk/* \
+    && find / -type f -iname \*.apk-new -delete \
+    && rm -rf /var/cache/apk/*
 
 RUN docker-php-ext-configure intl \
     && docker-php-ext-configure opcache \
     && docker-php-ext-configure ldap \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) gd zip xml intl pdo pdo_mysql pdo_pgsql curl bcmath opcache exif ldap
+    && docker-php-ext-install -j$(nproc)  \
+      gd  \
+      zip  \
+      xml  \
+      intl  \
+      pdo  \
+      pdo_mysql  \
+      pdo_pgsql  \
+      curl  \
+      bcmath  \
+      opcache  \
+      exif  \
+      ldap  \
+      gettext
 
-RUN apk add --no-cache gettext-dev && docker-php-ext-install -j$(nproc) gettext
-# Install Redis
+# Install PECL extensions
 RUN docker-php-source extract \
-    && pecl install redis \
-    && docker-php-ext-enable redis \
+    && pecl install redis memcached \
+    && docker-php-ext-enable redis memcached \
     && docker-php-source delete
 
 # Add timezone
@@ -36,11 +69,6 @@ RUN ln -s /usr/share/zoneinfo/UTC /etc/localtime && \
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | \
     php -- --install-dir=/usr/local/bin --filename=composer
-
-# Cleanup
-RUN rm -rf /var/cache/apk/* \
-    && find / -type f -iname \*.apk-new -delete \
-    && rm -rf /var/cache/apk/*
 
 RUN mkdir -p ${WORKDIR}
 RUN chown www-data:www-data -R ${WORKDIR}
