@@ -33,9 +33,9 @@ RUN apk upgrade --update  \
         yarn \
         ansible \
         openssh \
+        rsync \
     && rm -rf /var/cache/apk/* \
-    && find / -type f -iname \*.apk-new -delete \
-    && rm -rf /var/cache/apk/*
+    && find / -type f -iname \*.apk-new -delete
 
 RUN ansible-galaxy role install ansistrano.deploy ansistrano.rollback
 
