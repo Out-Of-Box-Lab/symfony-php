@@ -36,6 +36,8 @@ RUN apk upgrade --update  \
     && find / -type f -iname \*.apk-new -delete \
     && rm -rf /var/cache/apk/*
 
+RUN ansible-galaxy role install ansistrano.deploy ansistrano.rollback
+
 RUN docker-php-ext-configure intl \
     && docker-php-ext-configure opcache \
     && docker-php-ext-configure ldap \
