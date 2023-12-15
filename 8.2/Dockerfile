@@ -1,7 +1,5 @@
 FROM --platform=linux/amd64 php:8.2-fpm-alpine
 
-MAINTAINER Dieter Blomme <dieterblomme@gmail.com>
-
 ENV WORKDIR "/var/www/app"
 
 RUN cd /usr/local/etc/php/conf.d/ && \
@@ -33,6 +31,7 @@ RUN apk upgrade --update  \
         postgresql-dev \
         tzdata \
         yarn \
+        ansible \
     && rm -rf /var/cache/apk/* \
     && find / -type f -iname \*.apk-new -delete \
     && rm -rf /var/cache/apk/*
