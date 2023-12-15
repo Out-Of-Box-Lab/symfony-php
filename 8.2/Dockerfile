@@ -32,6 +32,7 @@ RUN apk upgrade --update  \
         tzdata \
         yarn \
         ansible \
+        ssh \
     && rm -rf /var/cache/apk/* \
     && find / -type f -iname \*.apk-new -delete \
     && rm -rf /var/cache/apk/*
