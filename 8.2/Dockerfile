@@ -75,6 +75,10 @@ RUN curl -sS https://getcomposer.org/installer | \
 RUN mkdir -p ${WORKDIR}
 RUN chown www-data:www-data -R ${WORKDIR}
 
+RUN curl --compressed https://static.snyk.io/cli/latest/snyk-alpine -o snyk \
+    && chmod +x ./snyk \
+    && mv ./snyk /usr/local/bin/
+
 WORKDIR ${WORKDIR}
 
 EXPOSE 9000
